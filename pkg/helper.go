@@ -72,7 +72,7 @@ func deleteTemp() {
 func testDatabaseConnection(db *dbConfig) error {
 
 	logger.Info(fmt.Sprintf("Connecting to %s database ...", db.dbName))
-	connString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", db.dbUserName, db.dbPassword, db.dbHost, db.dbPort, db.dbName)
+	connString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", db.dbUserName, db.dbPassword, db.dbHost, db.dbPort, db.dbName, db.dbSslMode)
 	// Create the PostgresSQL client config file
 	if err := createPGConfigFile(*db); err != nil {
 		return errors.New(err.Error())
@@ -80,7 +80,7 @@ func testDatabaseConnection(db *dbConfig) error {
 	// Set database name for notification error
 	utils.DatabaseName = db.dbName
 	if db.dbName == "" {
-		connString = fmt.Sprintf("postgres://%s:%s@%s:%s/postgres?sslmode=disable", db.dbUserName, db.dbPassword, db.dbHost, db.dbPort)
+		connString = fmt.Sprintf("postgres://%s:%s@%s:%s/postgres?sslmode=%s", db.dbUserName, db.dbPassword, db.dbHost, db.dbPort, db.dbSslMode)
 	}
 
 	// Attempt to connect to the PostgreSQL server
