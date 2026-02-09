@@ -125,7 +125,7 @@ func migrateAllDatabases(dbConf, targetDb *dbConfig) {
 
 func (db *dbConfig) databaseExists() (bool, error) {
 	adminDb := *db
-	adminDb.dbName = "postgres" // Connect to default "postgres"
+	adminDb.dbName = db.dbAuthDatabase
 	dbConn, err := dbConnect(&adminDb)
 	if err != nil {
 		return false, fmt.Errorf("error connecting to the database: %w", err)
@@ -149,7 +149,7 @@ func (db *dbConfig) databaseExists() (bool, error) {
 
 func (db *dbConfig) createDatabase() error {
 	adminDb := *db
-	adminDb.dbName = "postgres" // Connect to default "postgres" database to create a new one
+	adminDb.dbName = db.dbAuthDatabase
 
 	dbConn, err := dbConnect(&adminDb)
 	if err != nil {

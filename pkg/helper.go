@@ -80,7 +80,7 @@ func testDatabaseConnection(db *dbConfig) error {
 	// Set database name for notification error
 	utils.DatabaseName = db.dbName
 	if db.dbName == "" {
-		connString = fmt.Sprintf("postgres://%s:%s@%s:%s/postgres?sslmode=%s", db.dbUserName, db.dbPassword, db.dbHost, db.dbPort, db.dbSslMode)
+		connString = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", db.dbUserName, db.dbPassword, db.dbHost, db.dbPort, db.dbAuthDatabase, db.dbSslMode)
 	}
 
 	// Attempt to connect to the PostgreSQL server
@@ -225,12 +225,23 @@ func convertJDBCToDbConfig(jdbcURI string) (*dbConfig, error) {
 		return &dbConfig{}, fmt.Errorf("incomplete JDBC URI: missing host, database, or username")
 	}
 
+	authDb := os.Getenv("DB_AUTH_DATABASE")
+	if authDb == "" {
+		authDb = defaultAuthDbName
+	}
+	sslMode := os.Getenv("DB_SSL_MODE")
+	if sslMode == "" {
+		sslMode = defaultSslMode
+	}
+
 	return &dbConfig{
-		dbHost:     host,
-		dbPort:     port,
-		dbName:     database,
-		dbUserName: username,
-		dbPassword: password,
+		dbHost:         host,
+		dbPort:         port,
+		dbName:         database,
+		dbUserName:     username,
+		dbPassword:     password,
+		dbSslMode:      sslMode,
+		dbAuthDatabase: authDb,
 	}, nil
 }
 

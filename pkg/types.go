@@ -26,13 +26,14 @@ package pkg
 
 type StorageType string
 type Database struct {
-	Host     string `yaml:"host"`
-	Port     string `yaml:"port"`
-	Name     string `yaml:"name"`
-	User     string `yaml:"user"`
-	Password string `yaml:"password"`
-	Path     string `yaml:"path"`
-	SslMode  string `yaml:"sslMode"`
+	Host         string `yaml:"host"`
+	Port         string `yaml:"port"`
+	Name         string `yaml:"name"`
+	User         string `yaml:"user"`
+	Password     string `yaml:"password"`
+	Path         string `yaml:"path"`
+	SslMode      string `yaml:"sslMode"`
+	AuthDatabase string `yaml:"authDatabase"`
 }
 type Config struct {
 	CronExpression   string     `yaml:"cronExpression"`
@@ -41,20 +42,22 @@ type Config struct {
 }
 
 type dbConfig struct {
-	dbHost     string
-	dbPort     string
-	dbName     string
-	dbUserName string
-	dbPassword string
-	dbSslMode  string
+	dbHost         string
+	dbPort         string
+	dbName         string
+	dbUserName     string
+	dbPassword     string
+	dbSslMode      string
+	dbAuthDatabase string
 }
 type targetDbConfig struct {
-	targetDbHost     string
-	targetDbPort     string
-	targetDbUserName string
-	targetDbPassword string
-	targetDbName     string
-	targetDbSslMode  string
+	targetDbHost         string
+	targetDbPort         string
+	targetDbUserName     string
+	targetDbPassword     string
+	targetDbName         string
+	targetDbSslMode      string
+	targetDbAuthDatabase string
 }
 type TgConfig struct {
 	Token  string
