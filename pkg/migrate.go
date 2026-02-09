@@ -170,6 +170,6 @@ func (db *dbConfig) createDatabase() error {
 }
 
 func dbConnect(db *dbConfig) (*pgx.Conn, error) {
-	connString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", db.dbUserName, db.dbPassword, db.dbHost, db.dbPort, db.dbName)
+	connString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", db.dbUserName, db.dbPassword, db.dbHost, db.dbPort, db.dbName,  db.dbSslMode)
 	return pgx.Connect(context.Background(), connString)
 }

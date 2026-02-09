@@ -32,6 +32,7 @@ type Database struct {
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
 	Path     string `yaml:"path"`
+	SslMode  string `yaml:"sslMode"`
 }
 type Config struct {
 	CronExpression   string     `yaml:"cronExpression"`
@@ -45,6 +46,7 @@ type dbConfig struct {
 	dbName     string
 	dbUserName string
 	dbPassword string
+	dbSslMode  string
 }
 type targetDbConfig struct {
 	targetDbHost     string
@@ -52,6 +54,7 @@ type targetDbConfig struct {
 	targetDbUserName string
 	targetDbPassword string
 	targetDbName     string
+	targetDbSslMode	 string
 }
 type TgConfig struct {
 	Token  string
