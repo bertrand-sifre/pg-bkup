@@ -45,6 +45,8 @@ Backup, restore, and migration targets, schedules, and retention policies are co
 | `DB_USERNAME`                  | Required                             | Database username.                                                         |
 | `DB_PASSWORD`                  | Required                             | Database password.                                                         |
 | `DB_URL`                       | Optional                             | Database URL in JDBC URI format.                                           |
+| `DB_SSL_MODE`                  | Optional (default: `disable`)        | SSL mode for database connection (`disable`, `require`, `verify-full`...). |
+| `DB_AUTH_DATABASE`             | Optional (default: `postgres`)       | Authentication database used to establish the connection.                  |
 | `AWS_ACCESS_KEY`               | Required for S3 storage              | AWS S3 Access Key.                                                         |
 | `AWS_SECRET_KEY`               | Required for S3 storage              | AWS S3 Secret Key.                                                         |
 | `AWS_BUCKET_NAME`              | Required for S3 storage              | AWS S3 Bucket Name.                                                        |
