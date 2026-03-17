@@ -59,3 +59,17 @@ docker run --rm --network your_network_name \
 
 - Use `--all-in-one` if you want a quick, simple backup for disaster recovery where you'll restore everything at once.
 - Use `--all-databases` if you need granularity in restoring specific databases or tables without affecting others.
+
+## Excluding Databases
+
+When using `--all-databases`, you can exclude specific databases with the `--exclude-db` flag (comma-separated list).
+
+```bash
+docker run --rm --network your_network_name \
+  -v $PWD/backup:/backup/ \
+  -e "DB_HOST=dbhost" \
+  -e "DB_PORT=5432" \
+  -e "DB_USERNAME=username" \
+  -e "DB_PASSWORD=password" \
+  jkaninda/pg-bkup backup --all-databases --exclude-db _aiven,defaultdb
+```

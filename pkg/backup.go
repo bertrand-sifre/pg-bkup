@@ -130,7 +130,18 @@ func backupAll(db *dbConfig, config *BackupConfig) {
 	if err != nil {
 		logger.Fatal("Error listing databases", "error", err)
 	}
-	logger.Info("Backing up all databases", "count", len(databases))
+	if len(config.excludeDatabases) > 0 {
+		filtered := []string{}
+		for _, name := range databases {
+			if !utils.Contains(config.excludeDatabases, name) {
+				filtered = append(filtered, name)
+			}
+		}
+		logger.Info("Databases after exclusion", "excluded", len(databases)-len(filtered), "remaining", len(filtered))
+		databases = filtered
+	} else {
+		logger.Info("Backing up all databases", "count", len(databases))
+	}
 	for _, dbName := range databases {
 		db.dbName = dbName
 		config.backupFileName = fmt.Sprintf("%s_%s.sql.gz", dbName, time.Now().Format("20060102_150405"))
