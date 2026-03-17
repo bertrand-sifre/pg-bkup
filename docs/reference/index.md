@@ -26,9 +26,10 @@ Backup, restore, and migration targets, schedules, and retention policies are co
 | `--port`                | `-p`       | Database port. Default: `5432`.                                                           |
 | `--disable-compression` |            | Disable compression for database backups.                                                 |
 | `--cron-expression`     | `-e`       | Cron expression for scheduled backups (e.g., `0 0 * * *` or `@daily`).                    |
-| `--all-databases`       | `-a`       | Backs up all databases separately (e.g., `backup --all-databases`).                       |
-| `--all-in-one`          | `-A`       | Backs up all databases in a single file (e.g., `backup --all-databases --single-file`).   |
-| `--exclude-db`          |            | Excludes databases from `--all-databases` backup (e.g., `--exclude-db _aiven,defaultdb`). |
+| `--all-databases`       | `-a`       | Backs up all databases separately (e.g., `backup --all-databases`).                                          |
+| `--all-in-one`          | `-A`       | Backs up all databases in a single file using `pg_dumpall`, including roles and global schemas.               |
+| `--exclude-db`          |            | Excludes databases from backup, supported by both `--all-databases` and `--all-in-one` (e.g., `--exclude-db _aiven,defaultdb`). |
+| `--no-role-passwords`   |            | Does not dump role passwords. Required on managed databases (OVH, Aiven, RDS) where access to `pg_authid` is restricted. |
 | `--custom-name`         | ``         | Sets custom backup name for one time backup                                               |
 | `--help`                | `-h`       | Display help message and exit.                                                            |
 | `--version`             | `-V`       | Display version information and exit.                                                     |
