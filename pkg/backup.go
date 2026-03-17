@@ -25,6 +25,7 @@
 package pkg
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -294,8 +295,21 @@ func BackupDatabase(db *dbConfig, config *BackupConfig) error {
 	}
 
 	if config.all && config.allInOne {
-		logger.Info("Backing up all databases...")
 		dumpCmd = "pg_dumpall"
+		if db.dbAuthDatabase != "" {
+			dumpArgs = append(dumpArgs, fmt.Sprintf("--database=%s", db.dbAuthDatabase))
+		}
+		if config.noRolePasswords {
+			dumpArgs = append(dumpArgs, "--no-role-passwords")
+		}
+		if len(config.excludeDatabases) > 0 {
+			for _, excluded := range config.excludeDatabases {
+				dumpArgs = append(dumpArgs, fmt.Sprintf("--exclude-database=%s", excluded))
+			}
+			logger.Info("Backing up all databases...", "excluded", config.excludeDatabases)
+		} else {
+			logger.Info("Backing up all databases...")
+		}
 	} else {
 		dumpCmd = "pg_dump"
 		dumpArgs = append(dumpArgs, db.dbName)
@@ -346,6 +360,8 @@ func runCommandWithCompression(command string, args []string, outputPath string)
 	if err != nil {
 		return fmt.Errorf("failed to create stdout pipe: %w", err)
 	}
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
 
 	gzipCmd := exec.Command("gzip")
 	gzipCmd.Stdin = stdout
@@ -365,7 +381,7 @@ func runCommandWithCompression(command string, args []string, outputPath string)
 		return fmt.Errorf("failed to start gzip: %w", err)
 	}
 	if err = cmd.Run(); err != nil {
-		return fmt.Errorf("failed to execute %s: %w", command, err)
+		return fmt.Errorf("failed to execute %s: %w\n%s", command, err, stderr.String())
 	}
 	if err = gzipCmd.Wait(); err != nil {
 		return fmt.Errorf("failed to wait for gzip completion: %w", err)
